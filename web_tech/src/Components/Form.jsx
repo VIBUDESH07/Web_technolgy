@@ -5,6 +5,8 @@ import '../Styles/Form.css'; // Import CSS file
 const Form = () => {
   const [hospitalName, setHospitalName] = useState('');
   const [hospitalLocation, setHospitalLocation] = useState('');
+  const [hospitalCapacity, setHospitalCapacity] = useState('');
+  const [hospitalSpecialties, setHospitalSpecialties] = useState('');
   const [machines, setMachines] = useState([]);
 
   const handleHospitalNameChange = (e) => {
@@ -13,6 +15,14 @@ const Form = () => {
 
   const handleHospitalLocationChange = (e) => {
     setHospitalLocation(e.target.value);
+  };
+
+  const handleHospitalCapacityChange = (e) => {
+    setHospitalCapacity(e.target.value);
+  };
+
+  const handleHospitalSpecialtiesChange = (e) => {
+    setHospitalSpecialties(e.target.value);
   };
 
   const handleMachineChange = (index, key, value) => {
@@ -33,6 +43,8 @@ const Form = () => {
       const response = await axios.post('http://localhost:5000/api/hospitals', {
         name: hospitalName,
         location: hospitalLocation,
+        capacity: hospitalCapacity,
+        specialties: hospitalSpecialties,
         machines: machines
       });
 
@@ -40,6 +52,8 @@ const Form = () => {
       // Reset form fields
       setHospitalName('');
       setHospitalLocation('');
+      setHospitalCapacity('');
+      setHospitalSpecialties('');
       setMachines([]);
     } catch (error) {
       console.error('Error:', error);
@@ -68,6 +82,26 @@ const Form = () => {
           required
         />
       </div>
+      <div>
+        <label htmlFor="hospitalCapacity">Hospital Capacity (number of beds):</label>
+        <input
+          type="number"
+          id="hospitalCapacity"
+          value={hospitalCapacity}
+          onChange={handleHospitalCapacityChange}
+          required
+        />
+      </div>
+      <div>
+        <label htmlFor="hospitalSpecialties">Specialties:</label>
+        <input
+          type="text"
+          id="hospitalSpecialties"
+          value={hospitalSpecialties}
+          onChange={handleHospitalSpecialtiesChange}
+          required
+        />
+      </div>
       <div className="machine-section">
         <label>Hospital Machines:</label>
         {machines.map((machine, index) => (
@@ -89,7 +123,15 @@ const Form = () => {
               <option value="Ventilator">Ventilator</option>
               <option value="Defibrillator">Defibrillator</option>
               <option value="Anesthesia Machine">Anesthesia Machine</option>
-              {/* Add more options */}
+              <option value="Heart-Lung Machine">Heart-Lung Machine</option>
+              <option value="Dialysis Machine">Dialysis Machine</option>
+              <option value="Incubator">Incubator</option>
+              <option value="Infusion Pump">Infusion Pump</option>
+              <option value="Electrosurgical Unit">Electrosurgical Unit</option>
+              <option value="Surgical Microscope">Surgical Microscope</option>
+              <option value="Endoscope">Endoscope</option>
+              <option value="Patient Monitor">Patient Monitor</option>
+              {/* Add more options as needed */}
             </select>
             <label htmlFor={`make_${index}`}>Make:</label>
             <input
