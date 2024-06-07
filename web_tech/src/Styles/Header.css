@@ -1,0 +1,129 @@
+/* Header.css */
+
+/* Base styles for the navbar */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    background-color: white;
+    color: black;
+    border-bottom: 1px solid #ccc;
+  }
+  
+  .navbar a {
+    color: black;
+    text-decoration: none;
+    margin: 0 1rem;
+  }
+  
+  .navbar a:hover {
+    text-decoration: underline;
+  }
+  
+  .navbar-brand {
+    font-size: 1.5rem;
+  }
+  
+  .navbar-brand a {
+    display: flex;
+    align-items: center;
+    color: black;
+  }
+  
+  .navbar-search {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    position: relative; /* Position relative to place the icon */
+  }
+  
+  .navbar-search input {
+    width: 60%;
+    padding: 0.5rem;
+    padding-right: 2rem; /* Add padding to the right for the icon */
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .search-icon {
+    position: absolute; 
+    right: 21%;
+    top: 50%;
+    transform: translateY(-50%);
+    color: black;
+  }
+  
+  .navbar-links {
+    display: flex;
+    align-items: center;
+  }
+  
+  .navbar-links a {
+    margin-left: 1rem;
+  }
+  
+  .login-button {
+    padding: 0.5rem 1rem;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .login-button:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Responsive styles */
+  @media (max-width: 768px) {
+    .navbar {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  
+    .navbar-brand {
+      margin-bottom: 1rem;
+    }
+  
+    .navbar-search {
+      width: 100%;
+      justify-content: flex-start;
+    }
+  
+    .navbar-search input {
+      width: calc(100% - 2.5rem); /* Adjust input width */
+      margin-right: 0.5rem; /* Margin for the icon */
+    }
+  
+    .search-icon {
+      right: 0.5rem; /* Adjust position for smaller screens */
+    }
+  
+    .navbar-links {
+      width: 100%;
+      justify-content: space-between;
+      margin-top: 1rem;
+    }
+  
+    .navbar-links a {
+      margin: 0; /* Remove margin for better alignment */
+    }
+  
+    .login-button {
+      width: 100%; /* Full width button for smaller screens */
+      text-align: center;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .navbar-search input {
+      width: calc(100% - 2rem); /* Adjust input width */
+    }
+  
+    .search-icon {
+      right: 0.25rem; /* Adjust position for smaller screens */
+    }
+  }
+  
