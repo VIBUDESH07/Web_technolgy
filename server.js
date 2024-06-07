@@ -8,7 +8,7 @@ const PORT = process.env.PORT || 5000;
 const mongoURI = 'mongodb://localhost:27017/hospitalDB'; // Include the database name in the URI
 
 app.use(bodyParser.json());
-app.use(cors()); // Use cors middleware
+app.use(cors());
 
 MongoClient.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(client => {
@@ -25,8 +25,13 @@ MongoClient.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true 
       };
 
       hospitalsCollection.insertOne(newHospital)
-        .then(result => res.json(result.ops[0]))
-        .catch(err => console.error(err));
+        .then(result => {
+          res.json({ _id: result.insertedId, ...newHospital });
+        })
+        .catch(err => {
+          console.error(err);
+          res.status(500).json({ error: 'Failed to add hospital' });
+        });
     });
 
     app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
