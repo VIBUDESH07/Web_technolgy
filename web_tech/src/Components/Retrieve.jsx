@@ -1,8 +1,12 @@
 import React from 'react'
+import Header from './Header'
 
 const Retrieve = () => {
   return (
-    <div>Retrieve</div>
+
+    <div><>
+    <Header/>
+    Retrieve</></div>
   )
 }
 
