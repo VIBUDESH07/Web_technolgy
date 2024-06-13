@@ -1,0 +1,52 @@
+.update-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.update-container h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.update-container form {
+  display: flex;
+  flex-direction: column;
+}
+
+.update-container label {
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+.update-container input {
+  padding: 8px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.update-container button {
+  padding: 10px;
+  margin-top: 10px;
+  border: none;
+  border-radius: 4px;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.update-container button:hover {
+  background-color: #0056b3;
+}
+
+.message {
+  text-align: center;
+  margin-top: 20px;
+  color: green;
+  font-weight: bold;
+}
