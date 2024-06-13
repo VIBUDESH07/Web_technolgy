@@ -49,7 +49,7 @@ const Header = () => {
   };
 
   const filteredHospitals = hospitals.filter(hospital =>
-    hospital.name.toLowerCase().includes(searchTerm.toLowerCase())||
+    hospital.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     hospital.location.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
@@ -58,7 +58,7 @@ const Header = () => {
       <nav className="navbar">
         <div className="navbar-brand">
           <Link to="/">
-            <FaHome />
+            <FaHome className='home-icon' />
           </Link>
         </div>
         <div className="navbar-search">
@@ -74,9 +74,13 @@ const Header = () => {
           </Link>
         </div>
         <div className="navbar-links">
-          <Link to="/login">
-            <button className="login-button">Login</button>
-          </Link>
+          <div className="dropdown">
+            <button className="dropbtn">Login</button>
+            <div className="dropdown-content">
+              <Link to="/login">User Login</Link>
+              <Link to="/s">SuperAdmin Login</Link>
+            </div>
+          </div>
         </div>
       </nav>
       <div className="table-container">
