@@ -1,10 +1,9 @@
 const express = require('express');
-const { MongoClient } = require('mongodb');
+const { MongoClient, ObjectId } = require('mongodb'); // Correct import
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const nodemailer = require('nodemailer');
 const schedule = require('node-schedule');
-
 const app = express();
 const PORT = process.env.PORT || 5000;
 const mongoURI = 'mongodb://localhost:27017/hospitalDB'; // Include the database name in the URI
@@ -30,8 +29,8 @@ MongoClient.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true 
 
     const sendEmailAlert = (machine, hospital) => {
       const mailOptions = {
-        from: 'vibudeshrb.22cse@kongu.edu', // replace with your email
-        to: hospital.email, // send to the hospital's email
+        from: 'vibudeshrb.22cse@kongu.edu',
+        to: hospital.email,
         subject: 'Machine Maintenance Alert',
         text: `The machine ${machine.type} (${machine.make} - ${machine.model} - ${machine.year}) at ${hospital.name} needs maintenance. It has been in use for more than 3 years.`
       };
@@ -63,34 +62,31 @@ MongoClient.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true 
         console.error('Error checking machine years:', error);
       }
     };
-    schedule.scheduleJob('0 0 * * *', checkMachineYears);
-    //schedule.scheduleJob('*/5 * * * * *', checkMachineYears);
 
-    // Existing code...
+    // Schedule job to run every day at 8:00 AM
+    schedule.scheduleJob('0 0 8 * * *', checkMachineYears);
 
-// Endpoint to add a new hospital
-app.post('/api/hospitals', (req, res) => {
-  const { name, location, machines, capacity, specialties, email } = req.body;
-  const newHospital = {
-    name,
-    location,
-    capacity,
-    specialties,
-    machines,
-    email // store email in the database
-  };
+    // Endpoint to add a new hospital
+    app.post('/api/hospitals', (req, res) => {
+      const { name, location, machines, capacity, specialties, email } = req.body;
+      const newHospital = {
+        name,
+        location,
+        capacity,
+        specialties,
+        machines,
+        email
+      };
 
-  hospitalsCollection.insertOne(newHospital)
-    .then(result => {
-      res.json({ _id: result.insertedId, ...newHospital });
-    })
-    .catch(err => {
-      console.error(err);
-      res.status(500).json({ error: 'Failed to add hospital' });
+      hospitalsCollection.insertOne(newHospital)
+        .then(result => {
+          res.json({ _id: result.insertedId, ...newHospital });
+        })
+        .catch(err => {
+          console.error(err);
+          res.status(500).json({ error: 'Failed to add hospital' });
+        });
     });
-});
-
-// Existing code...
 
     // Endpoint to retrieve all hospitals
     app.get('/api/hospitals', (req, res) => {
@@ -103,18 +99,54 @@ app.post('/api/hospitals', (req, res) => {
           res.status(500).json({ error: 'Failed to retrieve hospitals' });
         });
     });
-    
+
+    // Endpoint to update a hospital by ID
     app.put('/api/hospitals/:id', (req, res) => {
       const { id } = req.params;
       const updatedData = req.body;
 
-      hospitalsCollection.updateOne({ _id: new MongoClient.ObjectID(id) }, { $set: updatedData })
+      hospitalsCollection.updateOne({ _id:new ObjectId(id) }, { $set: updatedData })
         .then(result => {
-          res.json(result);
+          res.json({ success: true, message: 'Hospital updated successfully' });
         })
         .catch(err => {
           console.error(err);
           res.status(500).json({ error: 'Failed to update hospital' });
+        });
+    });
+
+    // Endpoint to delete a hospital by ID
+    app.delete('/api/hospitals/:id', (req, res) => {
+      const { id } = req.params;
+
+      hospitalsCollection.deleteOne({ _id:new ObjectId(id) })
+        .then(result => {
+          if (result.deletedCount === 1) {
+            res.json({ success: true, message: 'Hospital deleted successfully' });
+          } else {
+            res.status(404).json({ success: false, message: 'Hospital not found' });
+          }
+        })
+        .catch(err => {
+          console.error(err);
+          res.status(500).json({ error: 'Failed to delete hospital' });
+        });
+    });
+
+    // Endpoint to fetch a hospital by ID
+    app.get('/api/hospitals/:id', (req, res) => {
+      const { id } = req.params;
+
+      hospitalsCollection.findOne({ _id:new ObjectId(id) })
+        .then(hospital => {
+          if (!hospital) {
+            return res.status(404).json({ error: 'Hospital not found' });
+          }
+          res.json(hospital);
+        })
+        .catch(err => {
+          console.error(err);
+          res.status(500).json({ error: 'Failed to fetch hospital' });
         });
     });
 
@@ -151,11 +183,11 @@ app.post('/api/hospitals', (req, res) => {
         });
     });
 
-   
+    // Endpoint to handle regular user login
     app.post('/api/login', (req, res) => {
       const { email, password } = req.body;
 
-      usersCollection.findOne({ email, password }) 
+      usersCollection.findOne({ email, password })
         .then(user => {
           if (user) {
             res.json({ success: true });
@@ -171,4 +203,4 @@ app.post('/api/hospitals', (req, res) => {
 
     app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
   })
-  .catch(err => console.error(err));
+  .catch(err => console.error('MongoDB connection error:', err));
