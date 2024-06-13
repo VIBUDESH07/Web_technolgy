@@ -104,11 +104,11 @@ app.post('/api/hospitals', (req, res) => {
         });
     });
 
-    // Endpoint to handle login
+   
     app.post('/api/login', (req, res) => {
       const { email, password } = req.body;
 
-      usersCollection.findOne({ email, password }) // Simple validation, improve with hashing in production
+      usersCollection.findOne({ email, password }) 
         .then(user => {
           if (user) {
             res.json({ success: true });
