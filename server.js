@@ -103,6 +103,53 @@ app.post('/api/hospitals', (req, res) => {
           res.status(500).json({ error: 'Failed to retrieve hospitals' });
         });
     });
+    
+    app.put('/api/hospitals/:id', (req, res) => {
+      const { id } = req.params;
+      const updatedData = req.body;
+
+      hospitalsCollection.updateOne({ _id: new MongoClient.ObjectID(id) }, { $set: updatedData })
+        .then(result => {
+          res.json(result);
+        })
+        .catch(err => {
+          console.error(err);
+          res.status(500).json({ error: 'Failed to update hospital' });
+        });
+    });
+
+    // Endpoint to handle super admin login
+    app.post('/api/superadmin/login', (req, res) => {
+      const { email, password } = req.body;
+
+      usersCollection.findOne({ email, password })
+        .then(user => {
+          if (user && user.role === 'superadmin') {
+            res.json({ success: true });
+          } else {
+            res.status(401).json({ success: false, error: 'Invalid email or password' });
+          }
+        })
+        .catch(err => {
+          console.error(err);
+          res.status(500).json({ error: 'Failed to perform login' });
+        });
+    });
+
+    // Endpoint to add new users by super admin
+    app.post('/api/superadmin/users', (req, res) => {
+      const { email, password, role } = req.body;
+      const newUser = { email, password, role };
+
+      usersCollection.insertOne(newUser)
+        .then(result => {
+          res.json({ _id: result.insertedId, ...newUser });
+        })
+        .catch(err => {
+          console.error(err);
+          res.status(500).json({ error: 'Failed to add user' });
+        });
+    });
 
     // Endpoint to handle login
     app.post('/api/login', (req, res) => {
