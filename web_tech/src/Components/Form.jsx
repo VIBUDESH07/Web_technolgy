@@ -35,6 +35,11 @@ const Form = () => {
     setMachines([...machines, { type: '', make: '', model: '', year: '' }]);
   };
 
+  const handleRemoveMachine = (index) => {
+    const updatedMachines = machines.filter((_, i) => i !== index);
+    setMachines(updatedMachines);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -61,7 +66,10 @@ const Form = () => {
   };
 
   return (
+    <div>
+      <h1>Add Hospital</h1>
     <form className="form" onSubmit={handleSubmit}>
+     
       <div>
         <label htmlFor="hospitalName">Hospital Name:</label>
         <input
@@ -157,12 +165,14 @@ const Form = () => {
               onChange={(e) => handleMachineChange(index, 'year', e.target.value)}
               required
             />
+            <button type="button" onClick={() => handleRemoveMachine(index)}>Remove Machine</button>
           </div>
         ))}
         <button type="button" onClick={handleAddMachine}>Add Machine</button>
       </div>
       <button type="submit">Submit</button>
     </form>
+    </div>
   );
 };
 
