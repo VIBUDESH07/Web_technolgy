@@ -184,23 +184,22 @@ MongoClient.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true 
     });
 
     // Endpoint to handle regular user login
-    app.post('/api/login', (req, res) => {
+    app.post('/api/login', async (req, res) => {
       const { email, password } = req.body;
-
-      usersCollection.findOne({ email, password })
-        .then(user => {
-          if (user) {
-            res.json({ success: true });
-          } else {
-            res.status(401).json({ success: false, error: 'Invalid email or password' });
-          }
-        })
-        .catch(err => {
-          console.error(err);
-          res.status(500).json({ error: 'Failed to perform login' });
-        });
+  
+      try {
+        const user = await usersCollection.findOne({ email, password });
+        console.log(user)
+        if (user) {
+          res.json({ success: true, data: user });
+        } else {
+          res.status(401).json({ success: false, error: 'Invalid email or password' });
+        }
+      } catch (err) {
+        console.error('Error performing login:', err);
+        res.status(500).json({ error: 'Failed to perform login' });
+      }
     });
-
     app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
   })
   .catch(err => console.error('MongoDB connection error:', err));

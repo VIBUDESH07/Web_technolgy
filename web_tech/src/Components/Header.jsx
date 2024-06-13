@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { FaHome, FaSearch } from 'react-icons/fa';
 import '../Styles/Retrieve.css'; // Import the CSS file for styling
 import '../Styles/Header.css'; // Ensure this path is correct
@@ -10,6 +10,8 @@ import '../Styles/Header.css'; // Ensure this path is correct
 const Header = () => {
   const [hospitals, setHospitals] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const [isAuthenticated, setIsAuthenticated] = useState(localStorage.getItem('isLoggedIn') === 'true');
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -22,6 +24,19 @@ const Header = () => {
     };
 
     fetchData();
+  }, []);
+
+  useEffect(() => {
+    const handleAuthChange = () => {
+      setIsAuthenticated(localStorage.getItem('isLoggedIn') === 'true');
+    };
+
+    // Listen for the custom authChange event
+    window.addEventListener('authChange', handleAuthChange);
+
+    return () => {
+      window.removeEventListener('authChange', handleAuthChange);
+    };
   }, []);
 
   const generatePDF = () => {
@@ -48,6 +63,16 @@ const Header = () => {
     doc.save('hospital_report.pdf');
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem('email');
+    localStorage.removeItem('role');
+    localStorage.setItem('isLoggedIn', 'false');
+    setIsAuthenticated(false);
+    navigate('/');
+    // Dispatch a custom event to notify about the logout state change
+    window.dispatchEvent(new Event('authChange'));
+  };
+
   const filteredHospitals = hospitals.filter(hospital =>
     hospital.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     hospital.location.toLowerCase().includes(searchTerm.toLowerCase())
@@ -58,7 +83,7 @@ const Header = () => {
       <nav className="navbar">
         <div className="navbar-brand">
           <Link to="/">
-            <FaHome className='home-icon' />
+            <FaHome className="home-icon" />
           </Link>
         </div>
         <div className="navbar-search">
@@ -69,18 +94,16 @@ const Header = () => {
             onChange={(e) => setSearchTerm(e.target.value)} 
             className="search-input" 
           />
-          <Link to="/search">
-            <FaSearch className="search-icon" />
-          </Link>
+          <FaSearch className="search-icon" />
         </div>
         <div className="navbar-links">
-          <div className="dropdown">
-            <button className="dropbtn">Login</button>
-            <div className="dropdown-content">
-              <Link to="/login">User Login</Link>
-              <Link to="/s">SuperAdmin Login</Link>
-            </div>
-          </div>
+          {isAuthenticated ? (
+            <button onClick={handleLogout} className="login-button">Logout</button>
+          ) : (
+            <Link to="/login">
+              <button className="login-button">Login</button>
+            </Link>
+          )}
         </div>
       </nav>
       <div className="table-container">

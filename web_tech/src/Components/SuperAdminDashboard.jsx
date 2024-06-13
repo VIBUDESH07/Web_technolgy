@@ -37,7 +37,7 @@ const SuperAdminDashboard = () => {
         <div>
           <label>Role:</label>
           <select value={role} onChange={(e) => setRole(e.target.value)}>
-            <option value="admin">Admin</option>
+            <option value="admin">superadmin</option>
             <option value="user">User</option>
           </select>
         </div>

@@ -1,52 +1,77 @@
 .update-container {
-  max-width: 600px;
-  margin: 0 auto;
   padding: 20px;
-  background-color: #f9f9f9;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-.update-container h2 {
-  text-align: center;
-  margin-bottom: 20px;
+table {
+  width: 100%;
+  border-collapse: collapse;
 }
 
-.update-container form {
+th, td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+th {
+  background-color: #f2f2f2;
+}
+
+.update-button, .delete-button {
+  margin: 5px;
+  padding: 5px 10px;
+  border: none;
+  cursor: pointer;
+}
+
+.update-button {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.delete-button {
+  background-color: #f44336;
+  color: white;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+li {
+  padding: 5px 0;
+}
+.update-container {
+  padding: 20px;
+}
+
+form {
   display: flex;
   flex-direction: column;
 }
 
-.update-container label {
+label {
   margin-bottom: 10px;
-  font-weight: bold;
 }
 
-.update-container input {
+input {
   padding: 8px;
-  margin-bottom: 20px;
+  margin-top: 5px;
+  margin-bottom: 15px;
   border: 1px solid #ccc;
   border-radius: 4px;
 }
 
-.update-container button {
-  padding: 10px;
-  margin-top: 10px;
+button {
+  padding: 10px 20px;
+  background-color: #4CAF50;
+  color: white;
   border: none;
   border-radius: 4px;
-  background-color: #007bff;
-  color: white;
   cursor: pointer;
-  transition: background-color 0.3s;
 }
 
-.update-container button:hover {
-  background-color: #0056b3;
-}
-
-.message {
-  text-align: center;
-  margin-top: 20px;
-  color: green;
-  font-weight: bold;
+button:hover {
+  background-color: #45a049;
 }

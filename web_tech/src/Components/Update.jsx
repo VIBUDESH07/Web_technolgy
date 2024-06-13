@@ -14,7 +14,6 @@ const Update = () => {
     axios.get('http://localhost:5000/api/hospitals')
       .then(response => {
         setHospitals(response.data);
-        console.log(hospitals)
       })
       .catch(error => console.error('Error fetching data:', error));
   }, []);
@@ -55,7 +54,15 @@ const Update = () => {
               <td>{hospital.location}</td>
               <td>{hospital.capacity}</td>
               <td>{hospital.specialties}</td>
-              <td>{hospital.machines.join(', ')}</td>
+              <td>
+                <ul>
+                  {hospital.machines.map((machine, index) => (
+                    <li key={index}>
+                      {machine.type} - {machine.make} - {machine.model} - {machine.year}
+                    </li>
+                  ))}
+                </ul>
+              </td>
               <td>{hospital.address}</td>
               <td>{hospital.email}</td>
               <td>
