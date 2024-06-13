@@ -19,7 +19,7 @@ const Login = () => {
       });
       if (response.data.success) {
         localStorage.setItem('adminEmail', email);
-        history('/admin');
+        history('/add');
       } else {
         setError('Invalid credentials');
       }

@@ -66,27 +66,31 @@ MongoClient.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true 
     schedule.scheduleJob('0 0 * * *', checkMachineYears);
     //schedule.scheduleJob('*/5 * * * * *', checkMachineYears);
 
-    // Endpoint to add a new hospital
-    app.post('/api/hospitals', (req, res) => {
-      const { name, location, machines, capacity, specialties, email } = req.body; // include email in the body
-      const newHospital = {
-        name,
-        location,
-        capacity,
-        specialties,
-        machines,
-        email // store email in the database
-      };
+    // Existing code...
 
-      hospitalsCollection.insertOne(newHospital)
-        .then(result => {
-          res.json({ _id: result.insertedId, ...newHospital });
-        })
-        .catch(err => {
-          console.error(err);
-          res.status(500).json({ error: 'Failed to add hospital' });
-        });
+// Endpoint to add a new hospital
+app.post('/api/hospitals', (req, res) => {
+  const { name, location, machines, capacity, specialties, email } = req.body;
+  const newHospital = {
+    name,
+    location,
+    capacity,
+    specialties,
+    machines,
+    email // store email in the database
+  };
+
+  hospitalsCollection.insertOne(newHospital)
+    .then(result => {
+      res.json({ _id: result.insertedId, ...newHospital });
+    })
+    .catch(err => {
+      console.error(err);
+      res.status(500).json({ error: 'Failed to add hospital' });
     });
+});
+
+// Existing code...
 
     // Endpoint to retrieve all hospitals
     app.get('/api/hospitals', (req, res) => {
