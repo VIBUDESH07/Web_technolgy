@@ -3,35 +3,13 @@ import axios from 'axios';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import { Link } from 'react-router-dom';
-import { FaHome, FaSearch } from 'react-icons/fa'; // Importing home and search icons
+import { FaHome, FaSearch } from 'react-icons/fa';
 import '../Styles/Retrieve.css'; // Import the CSS file for styling
 import '../Styles/Header.css'; // Ensure this path is correct
 
 const Header = () => {
-  return (
-    <nav className="navbar">
-      <div className="navbar-brand">
-        <Link to="/">
-          <FaHome />
-        </Link>
-      </div>
-      <div className="navbar-search">
-        <input type="text" placeholder="Search..." />
-        <Link to="/search">
-          <FaSearch className="search-icon" />
-        </Link>
-      </div>
-      <div className="navbar-links">
-        <Link to="/login">
-          <button className="login-button">Login</button>
-        </Link>
-      </div>
-    </nav>
-  );
-};
-
-const Retrieve = () => {
   const [hospitals, setHospitals] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -70,9 +48,37 @@ const Retrieve = () => {
     doc.save('hospital_report.pdf');
   };
 
+  const filteredHospitals = hospitals.filter(hospital =>
+    hospital.name.toLowerCase().includes(searchTerm.toLowerCase())||
+    hospital.location.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
     <>
-      <Header />
+      <nav className="navbar">
+        <div className="navbar-brand">
+          <Link to="/">
+            <FaHome />
+          </Link>
+        </div>
+        <div className="navbar-search">
+          <input 
+            type="text" 
+            placeholder="Search by hospital name..." 
+            value={searchTerm} 
+            onChange={(e) => setSearchTerm(e.target.value)} 
+            className="search-input" 
+          />
+          <Link to="/search">
+            <FaSearch className="search-icon" />
+          </Link>
+        </div>
+        <div className="navbar-links">
+          <Link to="/login">
+            <button className="login-button">Login</button>
+          </Link>
+        </div>
+      </nav>
       <div className="table-container">
         <h2>Hospital Data</h2>
         <button onClick={generatePDF} className="download-button">Download Report</button>
@@ -87,7 +93,7 @@ const Retrieve = () => {
             </tr>
           </thead>
           <tbody>
-            {hospitals.map((hospital) => (
+            {filteredHospitals.map((hospital) => (
               <tr key={hospital._id}>
                 <td>{hospital.name}</td>
                 <td>{hospital.location}</td>
@@ -111,4 +117,4 @@ const Retrieve = () => {
   );
 };
 
-export default Retrieve;
+export default Header;
