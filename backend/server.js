@@ -1,22 +1,29 @@
 const express = require('express');
-const { MongoClient, ObjectId } = require('mongodb'); // Correct import
+const { MongoClient, ObjectId } = require('mongodb');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const nodemailer = require('nodemailer');
 const schedule = require('node-schedule');
 const app = express();
 const PORT = process.env.PORT || 5000;
-const mongoURI = 'mongodb+srv://vibudesh:040705@cluster0.oug8gz8.mongodb.net/hospitalDB?retryWrites=true&w=majority'; // Include the database name in the URI
+const mongoURI = 'mongodb+srv://vibudesh:040705@cluster0.oug8gz8.mongodb.net/hospitalDB?retryWrites=true&w=majority';
 
 app.use(bodyParser.json());
 app.use(cors());
 
-MongoClient.connect(mongoURI)
+const client = new MongoClient(mongoURI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  tls: true, // Ensure TLS/SSL is used
+  tlsInsecure: false // Prevent insecure connections
+});
+
+client.connect()
   .then(client => {
     console.log('MongoDB Connected');
     const db = client.db('hospitalDB');
     const hospitalsCollection = db.collection('hospitals');
-    const usersCollection = db.collection('users'); // Reference to the users collection
+    const usersCollection = db.collection('users');
 
     // Nodemailer setup
     const transporter = nodemailer.createTransport({
@@ -63,7 +70,7 @@ MongoClient.connect(mongoURI)
       }
     };
 
-    schedule.scheduleJob('*/5000 * * * * *', checkMachineYears);
+    schedule.scheduleJob('*/5 * * * * *', checkMachineYears);
 
     app.post('/api/hospitals', (req, res) => {
       const { name, location, machines, capacity, specialties, email } = req.body;
@@ -86,7 +93,6 @@ MongoClient.connect(mongoURI)
         });
     });
 
-    // Endpoint to retrieve all hospitals
     app.get('/api/hospitals', (req, res) => {
       hospitalsCollection.find().toArray()
         .then(results => {
@@ -98,7 +104,6 @@ MongoClient.connect(mongoURI)
         });
     });
 
-    // Endpoint to update a hospital by ID
     app.put('/api/hospitals/:id', (req, res) => {
       const { id } = req.params;
       const updatedData = req.body;
@@ -113,7 +118,6 @@ MongoClient.connect(mongoURI)
         });
     });
 
-    // Endpoint to delete a hospital by ID
     app.delete('/api/hospitals/:id', (req, res) => {
       const { id } = req.params;
 
@@ -131,7 +135,6 @@ MongoClient.connect(mongoURI)
         });
     });
 
-    // Endpoint to fetch a hospital by ID
     app.get('/api/hospitals/:id', (req, res) => {
       const { id } = req.params;
 
@@ -148,7 +151,6 @@ MongoClient.connect(mongoURI)
         });
     });
 
-    // Endpoint to handle super admin login
     app.post('/api/superadmin/login', (req, res) => {
       const { email, password } = req.body;
 
@@ -166,7 +168,6 @@ MongoClient.connect(mongoURI)
         });
     });
 
-    // Endpoint to add new users by super admin
     app.post('/api/superadmin/users', (req, res) => {
       const { email, password, role } = req.body;
       const newUser = { email, password, role };
@@ -181,7 +182,6 @@ MongoClient.connect(mongoURI)
         });
     });
 
-    // Endpoint to handle regular user login
     app.post('/api/login', async (req, res) => {
       const { email, password } = req.body;
 
