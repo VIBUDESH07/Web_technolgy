@@ -1,0 +1,121 @@
+/* src/Styles/Header.css */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #2c3e50;
+  padding: 10px 20px;
+  color: #ecf0f1;
+}
+
+.navbar-brand .home-icon {
+  color: #ecf0f1;
+  font-size: 24px;
+}
+
+.navbar-search {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  margin: 0 20px;
+}
+
+.search-input {
+  width: 100%;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 4px;
+}
+
+.search-icon {
+  margin-left: 10px;
+  color: #ecf0f1;
+}
+
+.navbar-links {
+  display: flex;
+  align-items: center;
+}
+
+.download-button {
+  margin-right: 10px;
+  background-color: #e74c3c;
+  color: #fff;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.download-button:hover {
+  background-color: #c0392b;
+}
+
+.login-button {
+  background-color: #2980b9;
+  color: #fff;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.login-button:hover {
+  background-color: #1f618d;
+}
+
+/* src/Styles/Retrieve.css */
+.table-container {
+  margin: 20px;
+}
+
+.styled-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 16px;
+}
+
+.styled-table th,
+.styled-table td {
+  padding: 12px 15px;
+  border: 1px solid #ddd;
+  text-align: left;
+}
+
+.styled-table th {
+  background-color: #2980b9;
+  color: #ffffff;
+}
+
+.styled-table tbody tr {
+  background-color: #f9f9f9;
+  border-bottom: 1px solid #dddddd;
+}
+
+.styled-table tbody tr:nth-of-type(even) {
+  background-color: #f3f3f3;
+}
+
+.styled-table tbody tr:last-of-type {
+  border-bottom: 2px solid #2980b9;
+}
+
+.styled-table tbody tr:hover {
+  background-color: #f1f1f1;
+}
+
+.view-button {
+  background-color: #2980b9;
+  color: #ffffff;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.view-button:hover {
+  background-color: #1f618d;
+}

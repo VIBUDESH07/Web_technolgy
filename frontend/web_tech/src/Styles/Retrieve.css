@@ -1,0 +1,44 @@
+/* src/Components/Sidebar.css */
+.sidebar {
+  width: 200px;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: #2c3e50;
+  padding-top: 20px;
+  transition: all 0.3s ease;
+}
+
+.sidebar ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.sidebar ul li {
+  padding: 10px;
+  margin: 10px 0;
+  transition: all 0.3s ease;
+}
+
+.sidebar ul li a {
+  text-decoration: none;
+  color: #ecf0f1;
+  display: block;
+  padding: 10px;
+  border-radius: 4px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.sidebar ul li a:hover {
+  background-color: #34495e;
+}
+
+.sidebar ul li a.active {
+  background-color: #e74c3c;
+  color: #ffffff;
+}
+
+.sidebar ul li a.active:hover {
+  background-color: #c0392b;
+}

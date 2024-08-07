@@ -6,12 +6,12 @@ const nodemailer = require('nodemailer');
 const schedule = require('node-schedule');
 const app = express();
 const PORT = process.env.PORT || 5000;
-const mongoURI = 'mongodb://localhost:27017/hospitalDB'; // Include the database name in the URI
+const mongoURI = 'mongodb+srv://vibudesh:040705@cluster0.oug8gz8.mongodb.net/hospitalDB?retryWrites=true&w=majority'; // Include the database name in the URI
 
 app.use(bodyParser.json());
 app.use(cors());
 
-MongoClient.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
+MongoClient.connect(mongoURI)
   .then(client => {
     console.log('MongoDB Connected');
     const db = client.db('hospitalDB');
@@ -63,10 +63,8 @@ MongoClient.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true 
       }
     };
 
-    // Schedule job to run every day at 8:00 AM
-    schedule.scheduleJob('0 0 8 * * *', checkMachineYears);
+    schedule.scheduleJob('*/5000 * * * * *', checkMachineYears);
 
-    // Endpoint to add a new hospital
     app.post('/api/hospitals', (req, res) => {
       const { name, location, machines, capacity, specialties, email } = req.body;
       const newHospital = {
@@ -105,7 +103,7 @@ MongoClient.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true 
       const { id } = req.params;
       const updatedData = req.body;
 
-      hospitalsCollection.updateOne({ _id:new ObjectId(id) }, { $set: updatedData })
+      hospitalsCollection.updateOne({ _id: new ObjectId(id) }, { $set: updatedData })
         .then(result => {
           res.json({ success: true, message: 'Hospital updated successfully' });
         })
@@ -119,7 +117,7 @@ MongoClient.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true 
     app.delete('/api/hospitals/:id', (req, res) => {
       const { id } = req.params;
 
-      hospitalsCollection.deleteOne({ _id:new ObjectId(id) })
+      hospitalsCollection.deleteOne({ _id: new ObjectId(id) })
         .then(result => {
           if (result.deletedCount === 1) {
             res.json({ success: true, message: 'Hospital deleted successfully' });
@@ -137,7 +135,7 @@ MongoClient.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true 
     app.get('/api/hospitals/:id', (req, res) => {
       const { id } = req.params;
 
-      hospitalsCollection.findOne({ _id:new ObjectId(id) })
+      hospitalsCollection.findOne({ _id: new ObjectId(id) })
         .then(hospital => {
           if (!hospital) {
             return res.status(404).json({ error: 'Hospital not found' });
@@ -186,10 +184,10 @@ MongoClient.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true 
     // Endpoint to handle regular user login
     app.post('/api/login', async (req, res) => {
       const { email, password } = req.body;
-  
+
       try {
         const user = await usersCollection.findOne({ email, password });
-        console.log(user)
+        console.log(user);
         if (user) {
           res.json({ success: true, data: user });
         } else {
@@ -200,6 +198,7 @@ MongoClient.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true 
         res.status(500).json({ error: 'Failed to perform login' });
       }
     });
+
     app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
   })
   .catch(err => console.error('MongoDB connection error:', err));
