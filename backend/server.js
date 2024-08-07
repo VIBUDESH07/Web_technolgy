@@ -6,8 +6,7 @@ const nodemailer = require('nodemailer');
 const schedule = require('node-schedule');
 const app = express();
 const PORT = process.env.PORT || 5000;
-const mongoURI = 'mongodb+srv://vibudesh:040705@cluster0.oug8gz8.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0'; // Include the database name in the URI
-
+const mongoURI = 'mongodb+srv://vibudesh:040705@cluster0.oug8gz8.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0'
 app.use(bodyParser.json());
 app.use(cors());
 
