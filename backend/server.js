@@ -8,10 +8,7 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const mongoURI = 'mongodb+srv://vibudesh:040705@cluster0.oug8gz8.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0&ssl=true'
 app.use(bodyParser.json());
-app.use(cors({
-  origin: 'http://localhost:3000', // Your frontend URL
-  credentials: true // Allow sending cookies
-}));
+app.use(cors());
 
 MongoClient.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(client => {
