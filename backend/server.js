@@ -64,8 +64,7 @@ MongoClient.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true 
         console.error('Error checking machine years:', error);
       }
     };
-   
-    schedule.scheduleJob('*/5 * * * * *', checkMachineYears);
+    schedule.scheduleJob('0 8 * * *', checkMachineYears);
     app.post('/api/hospitals', (req, res) => {
       const { name, location, machines, capacity, specialties, email } = req.body;
       const newHospital = {
