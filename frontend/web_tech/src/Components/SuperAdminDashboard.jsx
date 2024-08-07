@@ -9,7 +9,7 @@ const SuperAdminDashboard = () => {
   const handleAddUser = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:5000/api/superadmin/users', { email, password, role });
+      const response = await axios.post('https://we67.onrender.com/api/superadmin/users', { email, password, role });
       if (response.data._id) {
         alert('User added successfully');
         setEmail('');

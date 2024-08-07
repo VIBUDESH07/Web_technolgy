@@ -17,7 +17,7 @@ const Header = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/hospitals');
+        const response = await axios.get('https://we67.onrender.com/api/hospitals');
         setHospitals(response.data);
       } catch (error) {
         console.error('Error fetching data:', error);

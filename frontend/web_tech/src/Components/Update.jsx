@@ -11,7 +11,7 @@ const Update = () => {
 
   useEffect(() => {
     // Fetch all hospital records
-    axios.get('http://localhost:5000/api/hospitals')
+    axios.get('https://we67.onrender.com/api/hospitals')
       .then(response => {
         setHospitals(response.data);
       })

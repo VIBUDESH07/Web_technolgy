@@ -50,7 +50,7 @@ const Form = () => {
 
     try {
       // Send form data to server
-      const response = await axios.post('http://localhost:5000/api/hospitals', {
+      const response = await axios.post('https://we67.onrender.com/api/hospitals', {
         name: hospitalName,
         location: hospitalLocation,
         capacity: hospitalCapacity,

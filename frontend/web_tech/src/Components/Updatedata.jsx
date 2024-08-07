@@ -27,7 +27,7 @@ const Updatedata = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/hospitals/${id}`);
+        const response = await axios.get(`https://we67.onrender.com/api/hospitals/${id}`);
         const { name, location, capacity, specialties, machines, address, email } = response.data;
         setFormData({ name, location, capacity, specialties, machines, address, email });
       } catch (error) {
