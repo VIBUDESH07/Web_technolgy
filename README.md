@@ -1,6 +1,3 @@
-To create a comprehensive README file for a MERN stack project that involves machine supervision with SMTP and scheduling, you can follow this template:
-
----
 
 # Machine Supervision System
 
